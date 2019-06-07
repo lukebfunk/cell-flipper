@@ -1,10 +1,10 @@
 """Adapted from https://github.com/pypa/sampleproject
 """
 
-from setuptools import setup, find_packages
-from os import path
+from setuptools import setup
+# from os import path
 
-here = path.abspath(path.dirname(__file__))
+# here = path.abspath(path.dirname(__file__))
 
 setup(
     name='celllabeler',
