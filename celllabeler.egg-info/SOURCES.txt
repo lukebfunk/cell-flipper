@@ -1,6 +1,7 @@
 README.md
-cell_labeler.egg-info/PKG-INFO
-cell_labeler.egg-info/SOURCES.txt
-cell_labeler.egg-info/dependency_links.txt
-cell_labeler.egg-info/top_level.txt
-celllabeler/cell-labeler.py
+celllabeler/__init__.py
+celllabeler/celllabeler.py
+celllabeler.egg-info/PKG-INFO
+celllabeler.egg-info/SOURCES.txt
+celllabeler.egg-info/dependency_links.txt
+celllabeler.egg-info/top_level.txt

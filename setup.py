@@ -8,7 +8,7 @@ here = path.abspath(path.dirname(__file__))
 
 setup(
     name='celllabeler',
-    version='0.0',
+    version='0.1',
     description='GUI for quickly classifying labeled images',  # Required
     # long_description=long_description,
     url='http://github.com/lukebfunk/celllabeler',
