@@ -1,0 +1,12 @@
+Metadata-Version: 1.1
+Name: cell-labeler
+Version: 0.0
+Summary: GUI for quickly classifying labeled images
+Home-page: http://github.com/lukebfunk/cell-labeler
+Author: lukebfunk
+Author-email: lukefunk@broadinstitute.org
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
