@@ -1,5 +1,5 @@
 import pandas as pd
-import ops.io
+from ops.io import read_stack as read
 from ops.utils import regionprops,subimage
 import numpy as np
 import matplotlib.pyplot as plt
@@ -51,7 +51,7 @@ class celllabeler_gui:
 
 	def get_next_subimage(self):
 		label,img_file,labels_file = next(self.label_iterate)
-		img = ops.io.read_stack(img_file)
+		img = read(img_file)
 
 		#max z-project
 		if len(img.shape)==4:
@@ -59,7 +59,7 @@ class celllabeler_gui:
 		elif len(img.shape)>4:
 			assert Exception('too many image dimensions')
 
-		img_labels = ops.io.read_stack(labels_file)
+		img_labels = read(labels_file)
 
 		regions = regionprops(img_labels,img)
 
