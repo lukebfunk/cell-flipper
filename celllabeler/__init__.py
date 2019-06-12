@@ -11,43 +11,53 @@ def start_gui(df):
 	root = tk.Tk()
 	app = celllabeler_gui(root,df)
 	root.mainloop()
+	cell_classification = app.cell_classification
+	df = df.assign('class'=cell_classification)
+	df.to_hdf('table-classified.hdf',key='hdf')
 
 class celllabeler_gui:
 
 	def __init__(self, master,df):
 		self.label_iterate = iter(zip(df.label.tolist(),df.img_file.tolist(),df.label_file.tolist()))
 
-		self.frame = tk.Frame(master)
-		self.frame.pack()
+		frame = tk.Frame(master)
+		frame.pack()
+
+		self.cell_classification = []
 
 		self.button_var = tk.IntVar()
 		self.button_var.set(0)
 
-		self.display_text = tk.Label(master,textvariable=self.button_var)
-		self.display_text.pack()
+		display_text = tk.Label(master,textvariable=self.button_var)
+		display_text.pack()
 
-		self.quit_button = tk.Button(
-		    self.frame, text="QUIT", fg="red", command=master.destroy
+		quit_button = tk.Button(
+		    frame, text="QUIT", fg="red", command=master.destroy
 		    )
-		self.quit_button.pack(side=tk.LEFT)
+		quit_button.pack(side=tk.LEFT)
 
-		self.next_button = tk.Button(self.frame,text="NEXT",command=self.next_subimage)
-		self.next_button.pack(side=tk.BOTTOM)
+		positive_button = tk.Button(frame,text="+1",command=lambda:self.next_subimage(1))
+		positive_button.pack(side=tk.BOTTOM)
 
-		self.fig_setup(self.get_next_subimage())
+		negative_button = tk.Button(frame,text="-1",command=lambda:self.next_subimage(-1))
+		negative_button.pack(side=tk.BOTTOM)
 
+		self.fig_setup(frame,self.get_next_subimage())
 
-	def add_one(self):
-		self.button_var.set(self.button_var.get()+1)
-
-	def fig_setup(self,first_subimage):
+	def fig_setup(self,frame,first_subimage):
 		self.add_one()
 		channels = first_subimage.shape[0]
 		self.fig,self.subplots = plt.subplots(1,channels,figsize=(5,5))
-		self.canvas = FigureCanvasTkAgg(self.fig,master=self.frame)  # A tk.DrawingArea.
+		self.canvas = FigureCanvasTkAgg(self.fig,master=frame)  # A tk.DrawingArea.
 		self.canvas.draw()
 		self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 		self.display_subimage(first_subimage)
+
+	def next_subimage(self,classification):
+		self.cell_classification.append(classification)
+		subimage = self.get_next_subimage()
+		self.display_subimage(subimage)
+		self.add_one()
 
 	def get_next_subimage(self):
 		label,img_file,labels_file = next(self.label_iterate)
@@ -67,14 +77,12 @@ class celllabeler_gui:
 
 		return subimage(img,region,pad=10)
 
-	def next_subimage(self):
-	    subimage = self.get_next_subimage()
-	    self.display_subimage(subimage)
-	    self.add_one()
-	    
 	def display_subimage(self,img):
 		channels = img.shape[0]
 		for channel,subplot in zip(range(channels),self.subplots):
 			subplot.clear()
 			subplot.imshow(img[channel])
 			self.canvas.draw()
+
+	def add_one(self):
+		self.button_var.set(self.button_var.get()+1)
