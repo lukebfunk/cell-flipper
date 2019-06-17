@@ -20,7 +20,7 @@ def start_gui(df):
 
 class celllabeler_gui:
 
-	def __init__(self, master,df):
+	def __init__(self, master,df,classes=['interphase','mitotic']):
 		self.label_iterate = iter(zip(df.label.tolist(),df.img_file.tolist(),df.label_file.tolist()))
 
 		frame = tk.Frame(master)
@@ -39,11 +39,14 @@ class celllabeler_gui:
 		    )
 		quit_button.pack(side=tk.LEFT)
 
-		positive_button = tk.Button(frame,text="+1",command=lambda:self.next_subimage(1))
-		positive_button.pack(side=tk.BOTTOM)
+		class_buttons = [tk.Button(frame,text=label_class,command=lambda:self.next_subimage(label_class)).pack(side=tk.BOTTOM) for label_class in classes]
 
-		negative_button = tk.Button(frame,text="-1",command=lambda:self.next_subimage(-1))
-		negative_button.pack(side=tk.BOTTOM)
+
+		# positive_button = tk.Button(frame,text="+1",command=lambda:self.next_subimage(1))
+		# positive_button.pack(side=tk.BOTTOM)
+
+		# negative_button = tk.Button(frame,text="-1",command=lambda:self.next_subimage(-1))
+		# negative_button.pack(side=tk.BOTTOM)
 
 		self.fig_setup(frame,self.get_next_subimage())
 
