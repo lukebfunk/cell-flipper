@@ -14,7 +14,7 @@ def start_gui(df):
 	cell_classification = app.cell_classification
 	df_result = (df
 				 .head(len(cell_classification))
-				 .assign('class'=cell_classification)
+				 .assign(label_class=cell_classification)
 				)
 	df_result.to_hdf('table-classified.hdf',key='hdf')
 
