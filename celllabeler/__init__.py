@@ -12,8 +12,11 @@ def start_gui(df):
 	app = celllabeler_gui(root,df)
 	root.mainloop()
 	cell_classification = app.cell_classification
-	df = df.assign('class'=cell_classification)
-	df.to_hdf('table-classified.hdf',key='hdf')
+	df_result = (df
+				 .head(len(cell_classification))
+				 .assign('class'=cell_classification)
+				)
+	df_result.to_hdf('table-classified.hdf',key='hdf')
 
 class celllabeler_gui:
 
