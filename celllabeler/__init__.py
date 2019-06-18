@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
+from functools import partial
 # import celllabeler
 
 def start_gui(df):
@@ -39,14 +40,10 @@ class celllabeler_gui:
 		    )
 		quit_button.pack(side=tk.LEFT)
 
-		class_buttons = [tk.Button(frame,text=label_class,command=lambda:self.next_subimage(label_class)).pack(side=tk.BOTTOM) for label_class in classes]
+		class_buttons = [tk.Button(frame,text=label_class,command=partial(self.next_subimage,label_class)) for label_class in classes]
 
-
-		# positive_button = tk.Button(frame,text="+1",command=lambda:self.next_subimage(1))
-		# positive_button.pack(side=tk.BOTTOM)
-
-		# negative_button = tk.Button(frame,text="-1",command=lambda:self.next_subimage(-1))
-		# negative_button.pack(side=tk.BOTTOM)
+		for button in class_buttons:
+			button.pack(side=tk.BOTTOM)
 
 		self.fig_setup(frame,self.get_next_subimage())
 
