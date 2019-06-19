@@ -45,7 +45,7 @@ class celllabeler_gui:
 		self.label_iterate = iter(zip(df.label.tolist(),df.img_file.tolist(),df.label_file.tolist()))
 
 		frame = tk.Frame(master)
-		frame.pack()
+		frame.grid(row=0,column=0)
 
 		self.cell_classification = []
 
@@ -53,22 +53,23 @@ class celllabeler_gui:
 		self.button_var.set(0)
 
 		display_current = tk.Label(master,textvariable=self.button_var)
-		display_current.pack(side=tk.TOP)
+		display_current.grid(row=0,column=1)
 
 		display_total = tk.Label(master,text=' of '+str(df.pipe(len)))
-		display_total.pack(side=tk.TOP)
+		display_total.grid(row=0,column=2)
 
 		quit_button = tk.Button(
-		    frame, text="QUIT", fg="red", command=master.destroy
+		    master, text="QUIT", fg="red", command=master.destroy
 		    )
-		quit_button.pack(side=tk.LEFT)
+		quit_button.grid(row=1,column=1)
+
+		self.fig_setup(frame,self.get_next_subimage())
 
 		class_buttons = [tk.Button(frame,text=label_class,command=partial(self.next_subimage,label_class)) for label_class in classes]
 
-		for button in class_buttons:
-			button.pack(side=tk.LEFT)
+		for num,button in enumerate(class_buttons):
+			button.pack(side=tk.BOTTOM)
 
-		self.fig_setup(frame,self.get_next_subimage())
 
 	def fig_setup(self,frame,first_subimage):
 		self.add_one()
