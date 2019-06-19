@@ -7,7 +7,12 @@ from matplotlib.colors import ListedColormap
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 from functools import partial
-# import celllabeler
+
+#TODO
+# GUI file and preference selection
+# button placement
+# Fiji integration
+
 
 ramp = list(range(256))
 ZERO = [0]*256
@@ -47,8 +52,11 @@ class celllabeler_gui:
 		self.button_var = tk.IntVar()
 		self.button_var.set(0)
 
-		display_text = tk.Label(master,textvariable=self.button_var)
-		display_text.pack()
+		display_current = tk.Label(master,textvariable=self.button_var)
+		display_current.pack(side=tk.TOP)
+
+		display_total = tk.Label(master,text=' of '+str(df.pipe(len)))
+		display_total.pack(side=tk.TOP)
 
 		quit_button = tk.Button(
 		    frame, text="QUIT", fg="red", command=master.destroy
@@ -58,7 +66,7 @@ class celllabeler_gui:
 		class_buttons = [tk.Button(frame,text=label_class,command=partial(self.next_subimage,label_class)) for label_class in classes]
 
 		for button in class_buttons:
-			button.pack(side=tk.BOTTOM)
+			button.pack(side=tk.LEFT)
 
 		self.fig_setup(frame,self.get_next_subimage())
 
