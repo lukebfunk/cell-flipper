@@ -3,10 +3,25 @@ from ops.io import read_stack as read
 from ops.utils import regionprops,subimage
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 from functools import partial
 # import celllabeler
+
+ramp = list(range(256))
+ZERO = [0]*256
+ONE = [255]*256
+PLT_RED     = np.stack([ramp,ZERO,ZERO,ONE],axis=1)/255
+PLT_GREEN   = np.stack([ZERO,ramp,ZERO,ONE],axis=1)/255
+PLT_BLUE    = np.stack([ZERO,ZERO,ramp,ONE],axis=1)/255
+PLT_MAGENTA = np.stack([ramp,ZERO,ramp,ONE],axis=1)/255
+PLT_GRAY    = np.stack([ramp,ramp,ramp,ONE],axis=1)/255
+PLT_CYAN    = np.stack([ZERO,ramp,ramp,ONE],axis=1)/255
+
+DEFAULT_PLT_LUTS = PLT_GRAY, PLT_GREEN, PLT_RED, PLT_MAGENTA, PLT_CYAN, PLT_GRAY, PLT_GRAY
+DEFAULT_PLT_LUTS = list(map(ListedColormap,DEFAULT_PLT_LUTS))
+
 
 def start_gui(df):
 	root = tk.Tk()
@@ -82,9 +97,9 @@ class celllabeler_gui:
 
 	def display_subimage(self,img):
 		channels = img.shape[0]
-		for channel,subplot in zip(range(channels),self.subplots):
+		for channel,subplot,cmap in zip(range(channels),self.subplots,DEFAULT_PLT_LUTS[:channels]):
 			subplot.clear()
-			subplot.imshow(img[channel])
+			subplot.imshow(img[channel],cmap=cmap)
 			self.canvas.draw()
 
 	def add_one(self):
