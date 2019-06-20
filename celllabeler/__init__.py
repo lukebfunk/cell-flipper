@@ -12,7 +12,7 @@ from functools import partial
 # GUI file and preference selection
 # Fiji integration
 
-
+#FIJI-esque LUTs
 ramp = list(range(256))
 ZERO = [0]*256
 ONE = [255]*256
@@ -36,7 +36,7 @@ def start_gui(df):
 				 .head(len(cell_classification))
 				 .assign(label_class=cell_classification)
 				)
-	df_result.to_hdf('table-classified.hdf',key='hdf')
+	return df_result
 
 class celllabeler_gui:
 
@@ -44,7 +44,7 @@ class celllabeler_gui:
 		self.label_iterate = iter(zip(df.label.tolist(),df.img_file.tolist(),df.label_file.tolist()))
 
 		frame = tk.Frame(master)
-		frame.grid(row=0,column=0)
+		frame.grid(row=0,column=0) #use grid for master
 
 		self.cell_classification = []
 
@@ -64,11 +64,11 @@ class celllabeler_gui:
 
 		self.fig_setup(frame,self.get_next_subimage())
 
-		class_buttons = [tk.Button(frame,text=label_class+' [{}]'.format(shortcut+1),command=partial(self.next_subimage,label_class)) 
-							for shortcut,label_class in enumerate(classes)]
+		class_buttons = [tk.Button(frame,text=label_class+' [{}]'.format(order+1),command=partial(self.next_subimage,label_class)) 
+							for order,label_class in enumerate(classes)]
 
 		for num,(button,label_class) in enumerate(zip(class_buttons,classes)):
-			button.pack(side=tk.TOP)
+			button.pack(side=tk.TOP) #use pack for frame
 			master.bind(str(num+1),partial(self.next_subimage,label_class))
 
 
@@ -78,7 +78,7 @@ class celllabeler_gui:
 		self.fig,self.subplots = plt.subplots(1,channels,figsize=(5,5))
 		self.canvas = FigureCanvasTkAgg(self.fig,master=frame)  # A tk.DrawingArea.
 		self.canvas.draw()
-		self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+		self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1) #use pack for frame
 		self.display_subimage(first_subimage)
 
 	def next_subimage(self,classification,_event=None):

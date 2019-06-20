@@ -10,4 +10,5 @@ elif len(sys.argv) > 2:
 table_file = sys.argv[1]
 df = pd.read_hdf(table_file)
 
-celllabeler.start_gui(df)
+df_result = celllabeler.start_gui(df)
+df_result.to_hdf('table-classified.hdf',key='hdf')
