@@ -9,7 +9,7 @@ import tkinter as tk
 from functools import partial
 
 #TODO
-# GUI file and preference selection
+# GUI preference selection
 # Fiji integration
 
 #FIJI-esque LUTs
