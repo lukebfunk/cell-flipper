@@ -10,7 +10,6 @@ from functools import partial
 
 #TODO
 # GUI file and preference selection
-# button placement
 # Fiji integration
 
 
@@ -65,10 +64,12 @@ class celllabeler_gui:
 
 		self.fig_setup(frame,self.get_next_subimage())
 
-		class_buttons = [tk.Button(frame,text=label_class,command=partial(self.next_subimage,label_class)) for label_class in classes]
+		class_buttons = [tk.Button(frame,text=label_class+' [{}]'.format(shortcut+1),command=partial(self.next_subimage,label_class)) 
+							for shortcut,label_class in enumerate(classes)]
 
 		for num,button in enumerate(class_buttons):
 			button.pack(side=tk.BOTTOM)
+			master.bind(str(num+1),partial(self.next_subimage,label_class))
 
 
 	def fig_setup(self,frame,first_subimage):
@@ -80,7 +81,7 @@ class celllabeler_gui:
 		self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 		self.display_subimage(first_subimage)
 
-	def next_subimage(self,classification):
+	def next_subimage(self,classification,_event=None):
 		self.cell_classification.append(classification)
 		subimage = self.get_next_subimage()
 		self.display_subimage(subimage)
