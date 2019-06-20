@@ -36,6 +36,7 @@ def start_gui(df):
 				 .head(len(cell_classification))
 				 .assign(label_class=cell_classification)
 				)
+	read.keys['active'] = False
 	return df_result
 
 class celllabeler_gui:
@@ -61,6 +62,8 @@ class celllabeler_gui:
 		    master, text="QUIT", fg="red", command=master.destroy
 		    )
 		quit_button.grid(row=1,column=1)
+
+		read.keys['active'] = True
 
 		self.fig_setup(frame,self.get_next_subimage())
 
