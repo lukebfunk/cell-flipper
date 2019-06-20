@@ -11,6 +11,7 @@ from functools import partial
 #TODO
 # GUI preference selection
 # Fiji integration
+# quit using x window button
 
 #FIJI-esque LUTs
 ramp = list(range(256))
@@ -86,8 +87,7 @@ class celllabeler_gui:
 
 	def next_subimage(self,classification,_event=None):
 		self.cell_classification.append(classification)
-		subimage = self.get_next_subimage()
-		self.display_subimage(subimage)
+		self.display_subimage(self.get_next_subimage())
 		self.add_one()
 
 	def get_next_subimage(self):
