@@ -67,8 +67,8 @@ class celllabeler_gui:
 		class_buttons = [tk.Button(frame,text=label_class+' [{}]'.format(shortcut+1),command=partial(self.next_subimage,label_class)) 
 							for shortcut,label_class in enumerate(classes)]
 
-		for num,button in enumerate(class_buttons):
-			button.pack(side=tk.BOTTOM)
+		for num,(button,label_class) in enumerate(zip(class_buttons,classes)):
+			button.pack(side=tk.TOP)
 			master.bind(str(num+1),partial(self.next_subimage,label_class))
 
 
