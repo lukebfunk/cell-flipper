@@ -1,5 +1,6 @@
 import pandas as pd
 from ops.io import read_stack as read
+from ops.io import ij_open
 from ops.utils import regionprops,subimage
 import numpy as np
 import matplotlib.pyplot as plt
@@ -41,7 +42,9 @@ def start_gui(df):
 
 class celllabeler_gui:
 
-	def __init__(self, master,df,classes=['interphase','mitotic']):
+	def __init__(self, master,df,classes=['interphase','mitotic'],mode='plt'):
+		self.mode=mode
+
 		self.label_iterate = iter(zip(df.label.tolist(),df.img_file.tolist(),df.label_file.tolist()))
 
 		frame = tk.Frame(master)
@@ -79,11 +82,12 @@ class celllabeler_gui:
 
 	def fig_setup(self,frame,first_subimage):
 		self.add_one()
-		channels = first_subimage.shape[0]
-		self.fig,self.subplots = plt.subplots(1,channels,figsize=(5,5))
-		self.canvas = FigureCanvasTkAgg(self.fig,master=frame)  # A tk.DrawingArea.
-		self.canvas.draw()
-		self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1) #use pack for frame
+		if self.mode != 'fiji':
+			channels = first_subimage.shape[0]
+			self.fig,self.subplots = plt.subplots(1,channels,figsize=(5,5))
+			self.canvas = FigureCanvasTkAgg(self.fig,master=frame)  # A tk.DrawingArea.
+			self.canvas.draw()
+			self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1) #use pack for frame
 		self.display_subimage(first_subimage)
 
 	def next_subimage(self,classification,_event=None):
@@ -110,11 +114,16 @@ class celllabeler_gui:
 		return subimage(img,region,pad=10)
 
 	def display_subimage(self,img):
-		channels = img.shape[0]
-		for channel,subplot,cmap in zip(range(channels),self.subplots,DEFAULT_PLT_LUTS[:channels]):
-			subplot.clear()
-			subplot.imshow(img[channel],cmap=cmap)
-			self.canvas.draw()
+		if self.mode =='fiji':
+			ij_open(img)
+			# adjust fiji window size
+			# close window
+		else:
+			channels = img.shape[0]
+			for channel,subplot,cmap in zip(range(channels),self.subplots,DEFAULT_PLT_LUTS[:channels]):
+				subplot.clear()
+				subplot.imshow(img[channel],cmap=cmap)
+				self.canvas.draw()
 
 	def add_one(self):
 		self.button_var.set(self.button_var.get()+1)
