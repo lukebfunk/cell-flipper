@@ -11,7 +11,6 @@ from functools import partial
 #TODO
 # GUI preference selection
 # Fiji integration
-# quit using x window button
 
 #FIJI-esque LUTs
 ramp = list(range(256))
@@ -63,6 +62,8 @@ class celllabeler_gui:
 		    master, text="QUIT", fg="red", command=master.destroy
 		    )
 		quit_button.grid(row=1,column=1)
+
+		master.protocol("WM_DELETE_WINDOW", master.destroy)
 
 		read.keys['active'] = True
 
