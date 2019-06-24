@@ -67,6 +67,7 @@ elif len(sys.argv) == 2:
 	if ext_1 not in table_ext:
 		raise Exception('input table file must be .csv or .hdf')
 	else:
+		table_file = filename_1
 		df = pd.read_hdf(table_file)
 elif len(sys.argv) > 2:
 	raise Exception('only 1 input needed (table file)')
