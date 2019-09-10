@@ -1,1 +1,1 @@
-cell-flipper
+cellflipper

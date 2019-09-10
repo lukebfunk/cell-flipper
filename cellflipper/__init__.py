@@ -10,8 +10,13 @@ import tkinter as tk
 from functools import partial
 
 #TODO
+# reduce ops dependencies
+# return uncompleted table if quit before finishing
+# save final table to daughter directory, not current directory
+# handle finishing final iteration through cells
+# go back in case of mis-click
 # GUI preference selection
-# Fiji integration
+# Fiji integration?
 
 #FIJI-esque LUTs
 ramp = list(range(256))
@@ -33,9 +38,10 @@ def start_CellFlipper(df):
 	app = CellFlipper(root,df)
 	root.mainloop()
 	cell_classification = app.cell_classification
+	root.destroy()
 	df_result = (df
 				 .head(len(cell_classification))
-				 .assign(label_class=cell_classification)
+				 .assign(flipper_class=cell_classification)
 				)
 	read.keys['active'] = False
 	return df_result
@@ -62,11 +68,11 @@ class CellFlipper:
 		display_total.grid(row=0,column=2)
 
 		quit_button = tk.Button(
-		    master, text="QUIT", fg="red", command=master.destroy
+		    master, text="QUIT", fg="red", command=master.quit
 		    )
 		quit_button.grid(row=1,column=1)
 
-		master.protocol("WM_DELETE_WINDOW", master.destroy)
+		master.protocol("WM_DELETE_WINDOW", master.quit)
 
 		read.keys['active'] = True
 

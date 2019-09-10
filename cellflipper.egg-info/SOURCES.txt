@@ -1,7 +1,7 @@
 README.md
-cell-flipper/__init__.py
-cell-flipper/__main__.py
-cell_flipper.egg-info/PKG-INFO
-cell_flipper.egg-info/SOURCES.txt
-cell_flipper.egg-info/dependency_links.txt
-cell_flipper.egg-info/top_level.txt
+cellflipper/__init__.py
+cellflipper/__main__.py
+cellflipper.egg-info/PKG-INFO
+cellflipper.egg-info/SOURCES.txt
+cellflipper.egg-info/dependency_links.txt
+cellflipper.egg-info/top_level.txt
