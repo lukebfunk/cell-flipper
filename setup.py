@@ -7,7 +7,7 @@ from setuptools import setup
 # here = path.abspath(path.dirname(__file__))
 
 setup(
-    name='cell-flipper',
+    name='cellflipper',
     version='0.1',
     description='GUI for quickly classifying labeled images',  # Required
     # long_description=long_description,
@@ -18,5 +18,5 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
     ],
-    packages=['cell-flipper'],
+    packages=['cellflipper'],
 )
