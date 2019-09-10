@@ -28,9 +28,9 @@ DEFAULT_PLT_LUTS = PLT_GRAY, PLT_GREEN, PLT_RED, PLT_MAGENTA, PLT_CYAN, PLT_GRAY
 DEFAULT_PLT_LUTS = list(map(ListedColormap,DEFAULT_PLT_LUTS))
 
 
-def start_gui(df):
+def start_CellFlipper(df):
 	root = tk.Tk()
-	app = celllabeler_gui(root,df)
+	app = CellFlipper(root,df)
 	root.mainloop()
 	cell_classification = app.cell_classification
 	df_result = (df
@@ -40,7 +40,7 @@ def start_gui(df):
 	read.keys['active'] = False
 	return df_result
 
-class celllabeler_gui:
+class CellFlipper:
 
 	def __init__(self, master,df,classes=['interphase','mitotic'],mode='plt'):
 		self.mode=mode

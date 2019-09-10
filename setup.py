@@ -7,16 +7,16 @@ from setuptools import setup
 # here = path.abspath(path.dirname(__file__))
 
 setup(
-    name='celllabeler',
+    name='cell-flipper',
     version='0.1',
     description='GUI for quickly classifying labeled images',  # Required
     # long_description=long_description,
-    url='http://github.com/lukebfunk/celllabeler',
+    url='http://github.com/lukebfunk/cell-flipper',
     author='lukebfunk',  # Optional
     author_email='lukefunk@broadinstitute.org',
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
     ],
-    packages=['celllabeler'],
+    packages=['cell-flipper'],
 )

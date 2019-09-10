@@ -1,5 +1,5 @@
 import pandas as pd
-import celllabeler
+import cell-flipper
 import sys
 import tkinter as tk
 from tkinter import filedialog
@@ -72,5 +72,5 @@ elif len(sys.argv) == 2:
 elif len(sys.argv) > 2:
 	raise Exception('only 1 input needed (table file)')
 
-df_result = celllabeler.start_gui(df)
+df_result = cell-flipper.start_CellFlipper(df)
 df_result.to_hdf('table-classified.hdf',key='hdf')
