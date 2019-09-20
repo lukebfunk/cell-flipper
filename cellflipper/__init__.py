@@ -8,6 +8,7 @@ from matplotlib.colors import ListedColormap
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 from functools import partial
+from ops.io_hdf import read_hdf_image
 
 #TODO
 # reduce ops dependencies
@@ -51,7 +52,8 @@ class CellFlipper:
 	def __init__(self, master,df,classes=['interphase','mitotic'],mode='plt'):
 		self.mode=mode
 
-		self.label_iterate = iter(zip(df.label.tolist(),df.img_file.tolist(),df.label_file.tolist()))
+		# self.label_iterate = iter(zip(df.label.tolist(),df.img_file.tolist(),df.label_file.tolist()))
+		self.label_iterate = iter(zip(df.label.tolist(),df.img_file.tolist(),df.bounds.tolist()))
 
 		frame = tk.Frame(master)
 		frame.grid(row=0,column=0) #use grid for master
@@ -90,7 +92,7 @@ class CellFlipper:
 		self.add_one()
 		if self.mode != 'fiji':
 			channels = first_subimage.shape[0]
-			self.fig,self.subplots = plt.subplots(1,channels,figsize=(5,5))
+			self.fig,self.subplots = plt.subplots(1,channels,figsize=(10,5))
 			self.canvas = FigureCanvasTkAgg(self.fig,master=frame)  # A tk.DrawingArea.
 			self.canvas.draw()
 			self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1) #use pack for frame
@@ -102,22 +104,25 @@ class CellFlipper:
 		self.add_one()
 
 	def get_next_subimage(self):
-		label,img_file,labels_file = next(self.label_iterate)
-		img = read(img_file)
+		# label,img_file,labels_file = next(self.label_iterate)
+		label,img_file,bounds = next(self.label_iterate)
 
+		if img_file.endswith('tif'):
+			img = read(img_file)
+			# img_labels = read(labels_file)
+			# regions = regionprops(img_labels,img)
+			# region = regions[label-1].bbox
+			img_sub = subimage(img,bounds,pad=10)
+		elif img_file.endswith('hdf'):
+			bounds = np.array(bounds) + np.array([-10, -10, 10, 10])
+			img_sub = read_hdf_image(img_file,bbox=bounds)
 		#max z-project
-		if len(img.shape)==4:
-			img = img.max(axis=0)
-		elif len(img.shape)>4:
+		if len(img_sub.shape)==4:
+			img_sub = img_sub.max(axis=0)
+		elif len(img_sub.shape)>4:
 			assert Exception('too many image dimensions')
 
-		img_labels = read(labels_file)
-
-		regions = regionprops(img_labels,img)
-
-		region = regions[label-1].bbox
-
-		return subimage(img,region,pad=10)
+		return img_sub
 
 	def display_subimage(self,img):
 		if self.mode =='fiji':
